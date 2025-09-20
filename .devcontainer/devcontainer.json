@@ -1,0 +1,51 @@
+{
+  "name": "Python with uv",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  //"onCreateCommand": "bash .devcontainer/setup.sh",
+  //"postCreateCommand": [
+  //      "bash", 
+  //      "-c", 
+  //      "echo 'Exécution du setup...' && bash .devcontainer/setup.sh && echo 'Setup terminé!'"
+  //  ],
+
+  "postCreateCommand": "bash .devcontainer/setup.sh 2>&1 | tee /tmp/setup_output.log",
+  "remoteUser": "vscode",
+
+ // Configure VS Code settings
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.debugpy",
+        "charliermarsh.ruff",
+        "ms-python.black-formatter",
+        "ms-toolsai.jupyter"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.terminal.activateEnvironment": false,
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": false,
+        "python.linting.ruffEnabled": true,
+        "[python]": {
+          "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+          }
+        },
+        "pylance.enabled": true,
+        "jupyter.askForKernelRestart": false,
+        "jupyter.interactiveWindow.creationMode": "perFile"
+      }
+    }
+  },
+
+
+  "forwardPorts": [8000, 8080, 5000, 8888]
+  //"postCreateCommand": "uv --version",
+//"postCreateCommand": "chmod +x setup.sh && ./setup.sh",
+
+ // "postStartCommand": "if [ -f 'uv.lock' ]; then echo 'Installing dependencies from uv.lock...'; echo 'Installation' ; uv sync; fi",
+}
