@@ -15,7 +15,7 @@ if [ ! -f "uv.lock" ]; then
     uv add selenium webdriver-manager python-dotenv pillow
     
     echo "   📊 Adding data science packages..."
-    uv add jupyter ipykernel matplotlib pandas numpy
+    uv add jupyter ipykernel matplotlib pandas numpy jupyterlab polars
     
     echo "   🔧 Adding dev dependencies..."
     uv add --dev pytest ruff mypy
