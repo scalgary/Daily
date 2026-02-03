@@ -40,12 +40,12 @@ WORKDIR /opt/uv-project
 ENV UV_PROJECT_ENVIRONMENT=/opt/uv-project/py_daily
 RUN uv sync --frozen
 
-# Add venv to PATH
-ENV PATH="/opt/uv-project/py_daily/bin:${PATH}"
+
 
 # Register kernel
 RUN /opt/uv-project/py_daily/bin/python -m ipykernel install --name py_daily --display-name "py_daily"
-
+# Add venv to PATH
+ENV PATH="/opt/uv-project/py_daily/bin:${PATH}"
 USER vscode
 
 # Add prompt
@@ -56,3 +56,5 @@ WORKDIR /workspace
 EXPOSE 8888
 
 CMD ["jupyter", "lab", "--ip=0.0.0.0", "--no-browser", "--allow-root"]
+
+

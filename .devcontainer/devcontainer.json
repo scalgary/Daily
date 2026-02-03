@@ -14,5 +14,7 @@
       ]
     }
   },
-  "forwardPorts": [8888]
+  "forwardPorts": [8888],
+  "postCreateCommand": "nbstripout --install --attributes .gitattributes && git add -A"
+
 }
