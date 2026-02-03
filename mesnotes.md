@@ -8,3 +8,5 @@ then reload window
 --- check_container.sh
 
 bash .devcontainer/check_container.sh
+
+bash .devcontainer/setup.sh
