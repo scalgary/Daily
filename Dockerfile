@@ -34,6 +34,9 @@ RUN echo "SPARK_LOCAL_IP=127.0.0.1" >> ${SPARK_HOME}/conf/spark-env.sh && \
     echo "spark.sql.warehouse.dir=/tmp/spark-warehouse" >> ${SPARK_HOME}/conf/spark-defaults.conf
 
 # --- Jupyter + Lint ---
+
+    # Install ipykernel globally for kernel registration
+RUN pip install ipykernel
 # Create uv project files
 WORKDIR /tmp/uv-setup
 RUN uv init --no-readme --name daily_dev && \
