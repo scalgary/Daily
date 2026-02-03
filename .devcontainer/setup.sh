@@ -11,8 +11,6 @@ if [ ! -f "uv.lock" ]; then
     echo "   ⚙️  Running uv init..."
     uv init --no-readme
     
-    echo "   📋 Adding main dependencies..."
-    uv add selenium webdriver-manager python-dotenv pillow
     
     echo "   📊 Adding data science packages..."
     uv add jupyter ipykernel matplotlib pandas numpy

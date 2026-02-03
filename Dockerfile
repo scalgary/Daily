@@ -34,12 +34,13 @@ RUN echo "SPARK_LOCAL_IP=127.0.0.1" >> ${SPARK_HOME}/conf/spark-env.sh && \
     echo "spark.sql.warehouse.dir=/tmp/spark-warehouse" >> ${SPARK_HOME}/conf/spark-defaults.conf
 
 # --- Jupyter + Lint ---
-# Install as root
-RUN uv pip install --python $(which python3) \
-    jupyter \
-    ipykernel \
-    ruff \
-    pylint
+# Create uv project files
+WORKDIR /tmp/uv-setup
+RUN uv init --no-readme --name daily_dev && \
+    uv add jupyter ipykernel ruff pylint pyspark pandas polars
+
+
+
 
 # Register kernel as vscode
 USER vscode
