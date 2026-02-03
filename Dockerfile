@@ -1,6 +1,5 @@
 FROM mcr.microsoft.com/devcontainers/python:3.11
 
-
 # System dependencies
 RUN apt-get update -qq && \
     apt-get install -y wget curl jq default-jdk && \
@@ -13,7 +12,7 @@ RUN pip install uv
 ENV SPARK_VERSION=4.0.1
 ENV HADOOP_VERSION=3
 ENV SPARK_HOME=/opt/spark
-ENV PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin
+ENV PATH="${SPARK_HOME}/bin:${SPARK_HOME}/sbin:${PATH}"
 ENV PYSPARK_PYTHON=python3
 
 # Install Apache Spark
@@ -33,27 +32,24 @@ RUN echo "SPARK_LOCAL_IP=127.0.0.1" >> ${SPARK_HOME}/conf/spark-env.sh && \
     echo "spark.driver.host=localhost" >> ${SPARK_HOME}/conf/spark-defaults.conf && \
     echo "spark.sql.warehouse.dir=/tmp/spark-warehouse" >> ${SPARK_HOME}/conf/spark-defaults.conf
 
-# --- Jupyter + Lint ---
+# Copy uv project files
+COPY pyproject.toml uv.lock /opt/uv-project/
+WORKDIR /opt/uv-project
 
-    # Install ipykernel globally for kernel registration
-RUN pip install ipykernel
-# Create uv project files
-WORKDIR /tmp/uv-setup
-RUN uv init --no-readme --name daily_dev && \
-    uv add jupyter ipykernel ruff pylint pyspark pandas polars
+# Install with custom venv name
+ENV UV_PROJECT_ENVIRONMENT=/opt/uv-project/py_daily
+RUN uv sync --frozen
 
-
-
-
-# Register kernel as vscode
-USER vscode
-
-
-# Change prompt name
-RUN echo 'export PS1="daily_dev ➜ %~ $ "' >> /home/vscode/.zshrc
+# Add venv to PATH
+ENV PATH="/opt/uv-project/py_daily/bin:${PATH}"
 
 # Register kernel
-RUN python -m ipykernel install --user --name py_daily
+RUN /opt/uv-project/py_daily/bin/python -m ipykernel install --name py_daily --display-name "py_daily"
+
+USER vscode
+
+# Add prompt
+RUN echo 'export PS1="(py_daily) daily_dev ➜ %~ $ "' >> /home/vscode/.zshrc
 
 WORKDIR /workspace
 

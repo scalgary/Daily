@@ -1,7 +1,10 @@
 {
   "name": "daily_dev",
   "build": {
-    "dockerfile": "../Dockerfile"
+    "dockerfile": "../Dockerfile",
+    "args": {
+      "BUILDKIT_INLINE_CACHE": "0"
+    }
   },
   "customizations": {
     "vscode": {
